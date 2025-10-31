@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const signalEl = document.getElementById('signal');
     const statusEl = document.getElementById('status');
     const flightTimeEl = document.getElementById('flight-time');
+    const droneIdEl = document.getElementById('drone-id'); // <-- Added this selector
 
     let startTime = Date.now();
     let currentBattery = 98.5;
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update telemetry every 2 seconds
     setInterval(() => {
+        // ... (telemetry update logic remains the same) ...
         // Simulate altitude changes
         currentAltitude += (Math.random() - 0.5) * 10;
         if (currentAltitude < 50) currentAltitude = 50;
@@ -52,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to handle chat submission
     function handleChatSubmit() {
         const message = chatInput.value.trim();
-        if (message === '') return; // <-- Fixed: Removed the extra period here
+        if (message === '') return; 
 
         appendMessage(message, 'user');
         chatInput.value = '';
@@ -106,25 +108,26 @@ document.addEventListener('DOMContentLoaded', () => {
             return 'I can report on: \n- status\n- battery\n- altitude\n- speed\nI can also execute commands like "drone 2 status" (simulated).';
         }
 
-        // --- Pulling "live" data from telemetry panel ---
+        // --- Pulling "live" data from telemetry panel (Optimized) ---
+        // Use the variables defined at the top of the script
         if (lowerText.includes('status')) {
-            const currentStatus = document.getElementById('status').textContent;
-            const currentDrone = document.getElementById('drone-id').textContent;
+            const currentStatus = statusEl.textContent;
+            const currentDrone = droneIdEl.textContent;
             return `Drone ${currentDrone} is currently ${currentStatus}.`;
         }
         
         if (lowerText.includes('battery')) {
-            const currentBattery = document.getElementById('battery').textContent;
+            const currentBattery = batteryEl.textContent;
             return `Current battery level is ${currentBattery}.`;
         }
         
         if (lowerText.includes('altitude')) {
-            const currentAltitude = document.getElementById('altitude').textContent;
+            const currentAltitude = altitudeEl.textContent;
             return `Current altitude is ${currentAltitude}.`;
         }
 
         if (lowerText.includes('speed')) {
-            const currentSpeed = document.getElementById('speed').textContent;
+            const currentSpeed = speedEl.textContent;
             return `Current speed is ${currentSpeed}.`;
         }
 
