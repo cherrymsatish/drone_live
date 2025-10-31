@@ -1,47 +1,166 @@
 /* Use the Inter font family */
 body {
     font-family: 'Inter', sans-serif;
+    /* Smooth transition for color changes */
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Custom styles for chat bubbles */
+/* --- Theme Definitions using CSS Variables --- */
+
+/* 1. Default Dark Theme (Sci-Fi) */
+body.theme-dark {
+    --bg-primary: #111827; /* gray-900 */
+    --bg-secondary: #1f2937; /* gray-800 */
+    --bg-input: #374151; /* gray-700 */
+    --text-primary: #f3f4f6; /* gray-100 */
+    --text-muted: #9ca3af; /* gray-400 */
+    --text-highlight: #22d3ee; /* cyan-400 */
+    --text-status-ok: #34d399; /* green-400 */
+    --text-status-danger: #f87171; /* red-400 */
+    --border-accent: #374151; /* gray-700 */
+    --border-accent-light: #4b5563; /* gray-600 */
+    --btn-primary: #2563eb; /* blue-600 */
+    --btn-primary-hover: #1d4ed8; /* blue-700 */
+    --chat-user-bg: #2563eb; /* blue-600 */
+    --chat-bot-bg: #4b5563; /* gray-600 */
+    --scrollbar-track: #374151; /* gray-700 */
+    --scrollbar-thumb: #6b7280; /* gray-500 */
+}
+
+/* 2. Clean Light Theme (Corporate) */
+body.theme-light {
+    --bg-primary: #f3f4f6; /* gray-100 */
+    --bg-secondary: #ffffff; /* white */
+    --bg-input: #e5e7eb; /* gray-200 */
+    --text-primary: #111827; /* gray-900 */
+    --text-muted: #6b7280; /* gray-500 */
+    --text-highlight: #2563eb; /* blue-600 */
+    --text-status-ok: #059669; /* green-600 */
+    --text-status-danger: #dc2626; /* red-600 */
+    --border-accent: #e5e7eb; /* gray-200 */
+    --border-accent-light: #d1d5db; /* gray-300 */
+    --btn-primary: #2563eb; /* blue-600 */
+    --btn-primary-hover: #1d4ed8; /* blue-700 */
+    --chat-user-bg: #2563eb; /* blue-600 */
+    --chat-bot-bg: #e5e7eb; /* gray-200 */
+    --scrollbar-track: #e5e7eb; /* gray-200 */
+    --scrollbar-thumb: #9ca3af; /* gray-400 */
+}
+
+/* 3. Tactical Ops Theme (Military) */
+body.theme-military {
+    --bg-primary: #1a2e23; /* Dark Green */
+    --bg-secondary: #223b2c; /* Darker Green */
+    --bg-input: #2f523c; /* Mid Green */
+    --text-primary: #e8e8d5; /* Beige/Tan */
+    --text-muted: #a0a08b; /* Muted Tan */
+    --text-highlight: #f59e0b; /* amber-500 */
+    --text-status-ok: #84cc16; /* lime-500 */
+    --text-status-danger: #ef4444; /* red-500 */
+    --border-accent: #2f523c; /* Mid Green */
+    --border-accent-light: #417554; /* Lighter Green */
+    --btn-primary: #ca8a04; /* yellow-600 */
+    --btn-primary-hover: #a16207; /* yellow-700 */
+    --chat-user-bg: #ca8a04; /* yellow-600 */
+    --chat-bot-bg: #417554; /* Lighter Green */
+    --scrollbar-track: #223b2c;
+    --scrollbar-thumb: #417554;
+}
+
+/* 4. Blueprint Theme */
+body.theme-blueprint {
+    --bg-primary: #1e3a8a; /* blue-900 */
+    --bg-secondary: #1e40af; /* blue-800 */
+    --bg-input: #1d4ed8; /* blue-700 */
+    --text-primary: #dbeafe; /* blue-100 */
+    --text-muted: #93c5fd; /* blue-300 */
+    --text-highlight: #22d3ee; /* cyan-400 */
+    --text-status-ok: #a3e635; /* lime-400 */
+    --text-status-danger: #fb7185; /* rose-400 */
+    --border-accent: #1d4ed8; /* blue-700 */
+    --border-accent-light: #2563eb; /* blue-600 */
+    --btn-primary: #06b6d4; /* cyan-500 */
+    --btn-primary-hover: #0891b2; /* cyan-600 */
+    --chat-user-bg: #06b6d4; /* cyan-500 */
+    --chat-bot-bg: #1d4ed8; /* blue-700 */
+    --scrollbar-track: #1e40af;
+    --scrollbar-thumb: #2563eb;
+}
+
+
+/* --- Helper classes to apply variables --- */
+/* We apply these in the HTML instead of hard-coded Tailwind classes */
+
+.bg-primary { background-color: var(--bg-primary); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-input { background-color: var(--bg-input); }
+.text-primary { color: var(--text-primary); }
+.text-muted { color: var(--text-muted); }
+.text-highlight { color: var(--text-highlight); }
+.text-status-ok { color: var(--text-status-ok); }
+.text-status-danger { color: var(--text-status-danger); }
+.border-accent { border-color: var(--border-accent); }
+.border-accent-light { border-color: var(--border-accent-light); }
+.placeholder-muted::placeholder { color: var(--text-muted); }
+.bg-btn-primary { background-color: var(--btn-primary); }
+.bg-btn-primary-hover:hover { background-color: var(--btn-primary-hover); }
+
+/* --- Theme-aware Chat Bubbles --- */
 .chat-log-container {
-    height: 300px; /* Fixed height for the chat log */
+    height: 300px;
 }
-
 .chat-msg {
     padding: 10px 14px;
     border-radius: 16px;
     margin-bottom: 8px;
     max-width: 80%;
     word-wrap: break-word;
+    transition: background-color 0.3s ease;
 }
-
 .user-msg {
-    background-color: #2563eb; /* Blue for user */
-    color: white;
+    background-color: var(--chat-user-bg);
+    color: white; /* Most user bgs are dark */
     align-self: flex-end;
     border-bottom-right-radius: 4px;
 }
-
+/* Special case for light theme bot msg */
+body.theme-light .bot-msg {
+    color: var(--text-primary);
+}
 .bot-msg {
-    background-color: #4b5563; /* Gray for bot */
-    color: white;
+    background-color: var(--chat-bot-bg);
+    color: var(--text-primary);
     align-self: flex-start;
     border-bottom-left-radius: 4px;
 }
 
-/* Custom scrollbar for chat log (Webkit browsers) */
-#chat-log::-webkit-scrollbar {
-    width: 6px;
-}
+/* --- Theme-aware Scrollbar --- */
+#chat-log::-webkit-scrollbar { width: 6px; }
 #chat-log::-webkit-scrollbar-track {
-    background: #374151; /* gray-700 */
+    background: var(--scrollbar-track);
     border-radius: 10px;
 }
 #chat-log::-webkit-scrollbar-thumb {
-    background: #6b7280; /* gray-500 */
+    background: var(--scrollbar-thumb);
     border-radius: 10px;
 }
-#chat-log::-webkit-scrollbar-thumb:hover {
-    background: #9ca3af; /* gray-400 */
+
+/* --- Theme Switcher Button Styles --- */
+.theme-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: var(--bg-input);
+    color: var(--text-muted);
+    transition: all 0.2s ease;
 }
+.theme-btn:hover {
+    color: var(--text-primary);
+}
+.theme-btn.active {
+    background-color: var(--btn-primary);
+    color: white;
+    font-weight: 600;
+}
+

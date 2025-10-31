@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const signalEl = document.getElementById('signal');
     const statusEl = document.getElementById('status');
     const flightTimeEl = document.getElementById('flight-time');
-    const droneIdEl = document.getElementById('drone-id'); // <-- Added this selector
+    const droneIdEl = document.getElementById('drone-id');
 
     let startTime = Date.now();
     let currentBattery = 98.5;
@@ -16,29 +16,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update telemetry every 2 seconds
     setInterval(() => {
-        // ... (telemetry update logic remains the same) ...
-        // Simulate altitude changes
+        // ... (telemetry update logic) ...
         currentAltitude += (Math.random() - 0.5) * 10;
         if (currentAltitude < 50) currentAltitude = 50;
         if (currentAltitude > 200) currentAltitude = 200;
         altitudeEl.textContent = `${currentAltitude.toFixed(1)} m`;
 
-        // Simulate speed changes
         speedEl.textContent = `${(Math.random() * 20 + 15).toFixed(1)} km/h`;
 
-        // Simulate slow battery drain
         currentBattery -= 0.05;
-        if (currentBattery < 20) currentBattery = 99.0; // Recharge
+        if (currentBattery < 20) currentBattery = 99.0;
         batteryEl.textContent = `${currentBattery.toFixed(1)} %`;
-        batteryEl.className = `font-mono ${currentBattery < 30 ? 'text-red-400' : 'text-green-400'}`;
+        
+        // Use custom classes instead of hard-coded Tailwind
+        if (currentBattery < 30) {
+            batteryEl.className = 'font-mono text-status-danger';
+        } else {
+            batteryEl.className = 'font-mono text-status-ok';
+        }
 
-        // Simulate signal fluctuation
         signalEl.textContent = `${(Math.random() * 10 + 85).toFixed(1)} %`;
-
-        // Simulate status changes
         statusEl.textContent = flightStatuses[Math.floor(Math.random() * flightStatuses.length)];
         
-        // Update flight time
         const elapsed = new Date(Date.now() - startTime);
         const minutes = String(elapsed.getUTCMinutes()).padStart(2, '0');
         const seconds = String(elapsed.getUTCSeconds()).padStart(2, '0');
@@ -51,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('chat-input');
     const sendBtn = document.getElementById('send-btn');
 
-    // Function to handle chat submission
     function handleChatSubmit() {
         const message = chatInput.value.trim();
         if (message === '') return; 
@@ -59,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMessage(message, 'user');
         chatInput.value = '';
 
-        // Simulate bot "thinking"
         appendTypingIndicator();
         setTimeout(() => {
             removeTypingIndicator();
@@ -68,18 +65,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000 + Math.random() * 500);
     }
     
-    // Function to add a message to the chat log
     function appendMessage(message, sender) {
         const msgDiv = document.createElement('div');
         msgDiv.className = `chat-msg ${sender}-msg`;
-        msgDiv.textContent = message;
+        // Use textContent to prevent HTML injection
+        msgDiv.textContent = message; 
         chatLog.appendChild(msgDiv);
-        // Scroll to bottom
         chatLog.scrollTop = chatLog.scrollHeight;
     }
 
-    // Function to add a "typing..." indicator
     function appendTypingIndicator() {
+        // Prevent multiple typing indicators
+        if (document.getElementById('typing-indicator')) return;
+        
         const typingDiv = document.createElement('div');
         typingDiv.id = 'typing-indicator';
         typingDiv.className = 'bot-msg chat-msg opacity-75';
@@ -88,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         chatLog.scrollTop = chatLog.scrollHeight;
     }
 
-    // Function to remove the "typing..." indicator
     function removeTypingIndicator() {
         const indicator = document.getElementById('typing-indicator');
         if (indicator) {
@@ -96,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Function to generate a bot response
     function getBotResponse(text) {
         const lowerText = text.toLowerCase();
 
@@ -108,8 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return 'I can report on: \n- status\n- battery\n- altitude\n- speed\nI can also execute commands like "drone 2 status" (simulated).';
         }
 
-        // --- Pulling "live" data from telemetry panel (Optimized) ---
-        // Use the variables defined at the top of the script
         if (lowerText.includes('status')) {
             const currentStatus = statusEl.textContent;
             const currentDrone = droneIdEl.textContent;
@@ -131,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return `Current speed is ${currentSpeed}.`;
         }
 
-        // --- Simulated commands ---
         if (lowerText.includes('drone 2') || lowerText.includes('drone 3')) {
             return `Command acknowledged. Switching to ${lowerText.includes('drone 2') ? 'Drone 2' : 'Drone 3'}... (Simulation)`;
         }
@@ -140,16 +133,32 @@ document.addEventListener('DOMContentLoaded', () => {
             return 'Command acknowledged. Initiating Return-to-Base (RTB) protocol for DRN-108X... (Simulation)';
         }
 
-        // Default response
         return 'Sorry, I did not understand that command. Type "help" for a list of options.';
     }
 
-    // Event Listeners
     sendBtn.addEventListener('click', handleChatSubmit);
     chatInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             handleChatSubmit();
         }
     });
+
+    // --- 3. NEW: Theme Switcher Logic ---
+    const themeButtons = document.querySelectorAll('.theme-btn');
+    
+    themeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove 'active' class from all buttons
+            themeButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add 'active' class to the clicked button
+            button.classList.add('active');
+            
+            // Set the theme on the <body> tag
+            const theme = button.id.replace('theme-btn-', 'theme-');
+            document.body.className = theme;
+        });
+    });
+
 });
 

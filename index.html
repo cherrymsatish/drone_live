@@ -15,25 +15,37 @@
     <!-- Load Custom Stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-900 text-gray-100">
+<!-- The default theme is set on the body -->
+<body class="theme-dark bg-primary text-primary">
 
     <!-- Header -->
-    <nav class="bg-gray-800 shadow-lg">
+    <nav class="bg-secondary shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <h1 class="text-2xl font-bold text-white">Drone Control Center</h1>
+                    <h1 class="text-2xl font-bold">Drone Control Center</h1>
                 </div>
                 <div class="flex items-center">
                     <span class="relative flex h-3 w-3">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                     </span>
-                    <span class="ml-2 text-green-400 font-medium">System Online</span>
+                    <span class="ml-2 text-status-ok font-medium">System Online</span>
                 </div>
             </div>
         </div>
     </nav>
+
+    <!-- Theme Switcher -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <div class="bg-secondary rounded-lg shadow-lg p-4 flex flex-wrap gap-2 items-center">
+            <span class="font-semibold text-primary mr-2">Select Theme:</span>
+            <button id="theme-btn-dark" class="theme-btn active">Default Dark</button>
+            <button id="theme-btn-light" class="theme-btn">Clean Light</button>
+            <button id="theme-btn-military" class="theme-btn">Tactical Ops</button>
+            <button id="theme-btn-blueprint" class="theme-btn">Blueprint</button>
+        </div>
+    </div>
 
     <!-- Main Content Grid -->
     <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -43,31 +55,31 @@
             <div class="lg:col-span-2 flex flex-col gap-6">
                 
                 <!-- Video Feed -->
-                <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-                    <div class="p-4 border-b border-gray-700">
+                <div class="bg-secondary rounded-lg shadow-lg overflow-hidden">
+                    <div class="p-4 border-b border-accent">
                         <h2 class="text-xl font-semibold">Live Feed - Drone 1 (CAM-1)</h2>
                     </div>
                     <div class="relative">
                         <!-- "LIVE" Badge -->
                         <span class="absolute top-4 left-4 bg-red-600 text-white text-sm font-bold px-3 py-1 rounded-md z-10">LIVE</span>
-                        <!-- Placeholder for video feed -->
-                        <img src="https://placehold.co/1200x800/2d3748/e2e8f0?text=Drone+Camera+Feed" 
+                        <!-- Placeholder for video feed (using a neutral color) -->
+                        <img src="https://placehold.co/1200x800/4a5568/e2e8f0?text=Drone+Camera+Feed" 
                              alt="Drone camera feed" 
                              class="w-full h-auto object-cover"
-                             onerror="this.src='https://placehold.co/1200x800/2d3748/e2e8f0?text=Feed+Unavailable'">
+                             onerror="this.src='https://placehold.co/1200x800/4a5568/e2e8f0?text=Feed+Unavailable'">
                     </div>
                 </div>
 
                 <!-- Map View -->
-                <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-                    <div class="p-4 border-b border-gray-700">
+                <div class="bg-secondary rounded-lg shadow-lg overflow-hidden">
+                    <div class="p-4 border-b border-accent">
                         <h2 class="text-xl font-semibold">Mission Map</h2>
                     </div>
-                    <!-- Placeholder for map -->
-                    <img src="https://placehold.co/1200x800/2d3748/e2e8f0?text=Live+Map+View" 
+                    <!-- Placeholder for map (using a neutral color) -->
+                    <img src="https://placehold.co/1200x800/4a5568/e2e8f0?text=Live+Map+View" 
                          alt="Live map view" 
                          class="w-full h-auto object-cover"
-                         onerror="this.src='https://placehold.co/1200x800/2d3748/e2e8f0?text=Map+Unavailable'">
+                         onerror="this.src='https://placehold.co/1200x800/4a5568/e2e8f0?text=Map+Unavailable'">
                 </div>
             </div>
 
@@ -75,43 +87,44 @@
             <div class="lg:col-span-1 flex flex-col gap-6">
 
                 <!-- Telemetry -->
-                <div class="bg-gray-800 rounded-lg shadow-lg p-6">
-                    <h2 class="text-xl font-semibold mb-4 border-b border-gray-700 pb-2">Drone Telemetry</h2>
+                <div class="bg-secondary rounded-lg shadow-lg p-6">
+                    <h2 class="text-xl font-semibold mb-4 border-b border-accent pb-2">Drone Telemetry</h2>
                     <ul class="space-y-3 text-lg">
                         <li class="flex justify-between">
-                            <span class="font-medium text-gray-400">Drone ID:</span>
-                            <span id="drone-id" class="font-mono text-cyan-400">DRN-108X</span>
+                            <span class="font-medium text-muted">Drone ID:</span>
+                            <span id="drone-id" class="font-mono text-highlight">DRN-108X</span>
                         </li>
                         <li class="flex justify-between">
-                            <span class="font-medium text-gray-400">Status:</span>
-                            <span id="status" class="font-mono text-green-400 font-bold">---</span>
+                            <span class="font-medium text-muted">Status:</span>
+                            <span id="status" class="font-mono text-status-ok font-bold">---</span>
                         </li>
                         <li class="flex justify-between">
-                            <span class="font-medium text-gray-400">Altitude:</span>
-                            <span id="altitude" class="font-mono text-white">--- m</span>
+                            <span class="font-medium text-muted">Altitude:</span>
+                            <span id="altitude" class="font-mono text-primary">--- m</span>
                         </li>
                         <li class="flex justify-between">
-                            <span class="font-medium text-gray-400">Speed:</span>
-                            <span id="speed" class="font-mono text-white">--- km/h</span>
+                            <span class="font-medium text-muted">Speed:</span>
+                            <span id="speed" class="font-mono text-primary">--- km/h</span>
                         </li>
                         <li class="flex justify-between">
-                            <span class="font-medium text-gray-400">Battery:</span>
-                            <span id="battery" class="font-mono text-green-400">--- %</span>
+                            <span class="font-medium text-muted">Battery:</span>
+                            <!-- JS will add text-status-ok or text-status-danger here -->
+                            <span id="battery" class="font-mono">--- %</span>
                         </li>
                         <li class="flex justify-between">
-                            <span class="font-medium text-gray-400">Signal:</span>
-                            <span id="signal" class="font-mono text-white">--- %</span>
+                            <span class="font-medium text-muted">Signal:</span>
+                            <span id="signal" class="font-mono text-primary">--- %</span>
                         </li>
                         <li class="flex justify-between">
-                            <span class="font-medium text-gray-400">Flight Time:</span>
-                            <span id="flight-time" class="font-mono text-white">00:00</span>
+                            <span class="font-medium text-muted">Flight Time:</span>
+                            <span id="flight-time" class="font-mono text-primary">00:00</span>
                         </li>
                     </ul>
                 </div>
 
                 <!-- Chatbot -->
-                <div class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col h-[480px]">
-                    <h2 class="text-xl font-semibold mb-4 border-b border-gray-700 pb-2">Ops Chatbot</h2>
+                <div class="bg-secondary rounded-lg shadow-lg p-6 flex flex-col h-[480px]">
+                    <h2 class="text-xl font-semibold mb-4 border-b border-accent pb-2">Ops Chatbot</h2>
                     
                     <!-- Chat Log -->
                     <div id="chat-log" class="flex-grow overflow-y-auto pr-2 flex flex-col space-y-2 mb-4 chat-log-container">
@@ -123,8 +136,8 @@
 
                     <!-- Chat Input -->
                     <div class="flex space-x-2">
-                        <input type="text" id="chat-input" class="flex-1 bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Type a message...">
-                        <button id="send-btn" class="bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" id="chat-input" class="flex-1 bg-input border border-accent-light rounded-lg px-4 py-2 text-primary placeholder-muted focus:outline-none focus:ring-2 focus:ring-highlight" placeholder="Type a message...">
+                        <button id="send-btn" class="bg-btn-primary text-white font-semibold px-4 py-2 rounded-lg hover:bg-btn-primary-hover focus:outline-none focus:ring-2 focus:ring-highlight">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd" />
                             </svg>
@@ -140,3 +153,4 @@
     <script src="script.js" defer></script>
 </body>
 </html>
+
