@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to handle chat submission
     function handleChatSubmit() {
         const message = chatInput.value.trim();
-        if (message === '') return.
+        if (message === '') return; // <-- Fixed: Removed the extra period here
 
         appendMessage(message, 'user');
         chatInput.value = '';
@@ -149,3 +149,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
