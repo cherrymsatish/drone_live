@@ -155,8 +155,21 @@ document.addEventListener('DOMContentLoaded', () => {
             button.classList.add('active');
             
             // Set the theme on the <body> tag
-            const theme = button.id.replace('theme-btn-', 'theme-');
-            document.body.className = theme;
+            const theme = button.id.replace('theme-btn-', 'theme-'); // e.g., "theme-light"
+            
+            // --- FIX ---
+            // Get all existing classes from the body
+            const existingClasses = document.body.className.split(' ');
+            
+            // Filter out any old theme classes (those starting with "theme-")
+            const newClasses = existingClasses.filter(cls => !cls.startsWith('theme-'));
+            
+            // Add the new theme class
+            newClasses.push(theme);
+            
+            // Re-assign the new list of classes to the body
+            document.body.className = newClasses.join(' ');
+            // --- END FIX ---
         });
     });
 
