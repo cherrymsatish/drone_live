@@ -1,0 +1,47 @@
+/* Use the Inter font family */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Custom styles for chat bubbles */
+.chat-log-container {
+    height: 300px; /* Fixed height for the chat log */
+}
+
+.chat-msg {
+    padding: 10px 14px;
+    border-radius: 16px;
+    margin-bottom: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.user-msg {
+    background-color: #2563eb; /* Blue for user */
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+.bot-msg {
+    background-color: #4b5563; /* Gray for bot */
+    color: white;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+
+/* Custom scrollbar for chat log (Webkit browsers) */
+#chat-log::-webkit-scrollbar {
+    width: 6px;
+}
+#chat-log::-webkit-scrollbar-track {
+    background: #374151; /* gray-700 */
+    border-radius: 10px;
+}
+#chat-log::-webkit-scrollbar-thumb {
+    background: #6b7280; /* gray-500 */
+    border-radius: 10px;
+}
+#chat-log::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af; /* gray-400 */
+}
